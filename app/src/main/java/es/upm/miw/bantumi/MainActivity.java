@@ -120,12 +120,18 @@ public class MainActivity extends AppCompatActivity {
 //                startActivity(new Intent(this, BantumiPrefs.class));
 //                return true;
             case R.id.opcAcercaDe:
+                Log.i(LOG_TAG, "opción ACERCA DE");
                 new AlertDialog.Builder(this)
                         .setTitle(R.string.aboutTitle)
                         .setMessage(R.string.aboutMessage)
                         .setPositiveButton(android.R.string.ok, null)
                         .show();
-                return true;
+                break;
+            case R.id.opcReiniciarPartida:
+                Log.i(LOG_TAG, "opción REINICIAR");
+                ReiniciarDialogFragment dialogFragment = new ReiniciarDialogFragment();
+                dialogFragment.show(getSupportFragmentManager(), "frgReiniciar");
+                break;
 
             // @TODO!!! resto opciones
 
