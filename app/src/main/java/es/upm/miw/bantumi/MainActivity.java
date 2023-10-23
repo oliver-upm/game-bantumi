@@ -129,8 +129,8 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case R.id.opcReiniciarPartida:
                 Log.i(LOG_TAG, "opción REINICIAR");
-                ReiniciarDialogFragment dialogFragment = new ReiniciarDialogFragment();
-                dialogFragment.show(getSupportFragmentManager(), "frgReiniciar");
+                ReiniciarDialogFragment reiniciarDialogFragment = new ReiniciarDialogFragment();
+                reiniciarDialogFragment.show(getSupportFragmentManager(), "frgReiniciar");
                 break;
 
             // @TODO!!! resto opciones
@@ -143,6 +143,11 @@ public class MainActivity extends AppCompatActivity {
                 ).show();
         }
         return true;
+    }
+
+    protected void reiniciar() {
+        Log.i(LOG_TAG, "reiniciando partida...");
+        juegoBantumi.inicializar(JuegoBantumi.Turno.turnoJ1);
     }
 
     /**
