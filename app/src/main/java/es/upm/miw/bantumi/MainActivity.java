@@ -17,6 +17,10 @@ import com.google.android.material.snackbar.Snackbar;
 
 import java.util.Locale;
 
+import es.upm.miw.bantumi.dialogs.FinalAlertDialog;
+import es.upm.miw.bantumi.dialogs.GuardarPartidaDialogFragment;
+import es.upm.miw.bantumi.dialogs.RecuperarPartidaDialogFragment;
+import es.upm.miw.bantumi.dialogs.ReiniciarDialogFragment;
 import es.upm.miw.bantumi.model.BantumiViewModel;
 import es.upm.miw.bantumi.utils.ManejadorMemoriaInterna;
 
@@ -98,7 +102,7 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Muestra el valor <i>valor</i> en la posición <i>pos</i>
      *
-     * @param pos posición a actualizar
+     * @param pos   posición a actualizar
      * @param valor valor a mostrar
      */
     private void mostrarValor(int pos, int valor) {
@@ -140,6 +144,15 @@ public class MainActivity extends AppCompatActivity {
                 GuardarPartidaDialogFragment guardarPartidaDialogFragment = new GuardarPartidaDialogFragment();
                 guardarPartidaDialogFragment.show(getSupportFragmentManager(), "frgGuardar");
                 break;
+            case R.id.opcRecuperarPartida:
+                Log.i(LOG_TAG, "opción RECUPERAR");
+                if (juegoBantumi.isJuegoEmpezado()) {
+                    RecuperarPartidaDialogFragment recuperarPartidaDialogFragment = new RecuperarPartidaDialogFragment();
+                    recuperarPartidaDialogFragment.show(getSupportFragmentManager(), "frgRecuperar");
+                } else {
+                    this.recuperarPartida();
+                }
+                break;
 
             // @TODO!!! resto opciones
 
@@ -153,17 +166,34 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
-    protected void reiniciar() {
+    public void reiniciar() {
         Log.i(LOG_TAG, "reiniciando partida...");
         juegoBantumi.inicializar(JuegoBantumi.Turno.turnoJ1);
     }
 
-    protected void guardarPartida() {
+    public void guardarPartida() {
         Log.i(LOG_TAG, "guardando partida...");
-        this.manejadorMemoriaInterna.guardarPartida(this.getApplicationContext(), juegoBantumi.serializa());
+        this.manejadorMemoriaInterna.guardarPartida(this, juegoBantumi.serializa());
         Snackbar.make(
                 findViewById(android.R.id.content),
                 getString(R.string.txtSnackbarPartidaGuardada),
+                Snackbar.LENGTH_LONG
+        ).show();
+    }
+
+    public void recuperarPartida() {
+        Log.i(LOG_TAG, "recuperando partida...");
+        String partidaSerializada = this.manejadorMemoriaInterna.recuperarPartida(this);
+        String msgSnackbar;
+        if (partidaSerializada != null) {
+            juegoBantumi.deserializa(partidaSerializada);
+            msgSnackbar = getString(R.string.txtSnackbarPartidaRecuperada);
+        } else {
+            msgSnackbar = getString(R.string.txtSnackbarPartidaNoEncontrada);
+        }
+        Snackbar.make(
+                findViewById(android.R.id.content),
+                msgSnackbar,
                 Snackbar.LENGTH_LONG
         ).show();
     }
@@ -219,11 +249,11 @@ public class MainActivity extends AppCompatActivity {
             texto = "¡¡¡ EMPATE !!!";
         }
         Snackbar.make(
-                findViewById(android.R.id.content),
-                texto,
-                Snackbar.LENGTH_LONG
-        )
-        .show();
+                        findViewById(android.R.id.content),
+                        texto,
+                        Snackbar.LENGTH_LONG
+                )
+                .show();
 
         // @TODO guardar puntuación
 

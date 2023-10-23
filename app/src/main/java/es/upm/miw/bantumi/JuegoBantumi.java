@@ -21,6 +21,7 @@ public class JuegoBantumi {
 
     // Número inicial de semillas
     private final int numInicialSemillas;
+    private boolean juegoEmpezado = false;
 
     /**
      * Constructor
@@ -70,6 +71,7 @@ public class JuegoBantumi {
                             ? 0
                             : numInicialSemillas
             );
+        this.juegoEmpezado = false;
     }
 
     /**
@@ -86,6 +88,7 @@ public class JuegoBantumi {
         )
             return;
         Log.i("MiW", String.format("jugar(%02d)", pos));
+        this.juegoEmpezado = true;
 
         // Recoger semillas en posición pos
         int nSemillasHueco, numSemillas = getSemillas(pos);
@@ -186,6 +189,10 @@ public class JuegoBantumi {
         bantumiVM.setTurno(turno);
     }
 
+    public boolean isJuegoEmpezado() {
+        return juegoEmpezado;
+    }
+
     /**
      * Devuelve una cadena que representa el estado completo del juego
      *
@@ -193,6 +200,7 @@ public class JuegoBantumi {
      */
     public String serializa() {
         String juegoSerializado = "";
+        juegoSerializado = juegoSerializado.concat(this.juegoEmpezado + ";" );
         juegoSerializado = juegoSerializado.concat(this.turnoActual().toString() + ";");
         for (int i = 0; i < NUM_POSICIONES; i++) {
             juegoSerializado = juegoSerializado.concat(this.getSemillas(i) + ",");
@@ -207,6 +215,12 @@ public class JuegoBantumi {
      * @param juegoSerializado cadena que representa el estado completo del juego
      */
     public void deserializa(String juegoSerializado) {
-        // @TODO
+        String[] juego = juegoSerializado.split(";");
+        this.juegoEmpezado = Boolean.parseBoolean(juego[0]);
+        this.setTurno(Turno.valueOf(juego[1]));
+        String[] semillas = juego[2].split(",");
+        for (int i = 0; i < NUM_POSICIONES; i++) {
+            this.setSemillas(i, Integer.parseInt(semillas[i]));
+        }
     }
 }

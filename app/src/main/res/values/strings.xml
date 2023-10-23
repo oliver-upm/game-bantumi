@@ -51,9 +51,15 @@
     <string name="txtDialogoReiniciarTitulo">Reiniciar partida</string>
     <string name="txtDialogoReiniciarPregunta">¿Está seguro de que desea reiniciar la partida actual?</string>
 
-    <!-- Diálogo Guardar Partida -->
+    <!-- Guardar Partida -->
     <string name="txtDialogoGuardarTitulo">Guardar partida</string>
     <string name="txtDialogoGuardarPregunta">¿Desea guardar la partida actual?</string>
     <string name="txtSnackbarPartidaGuardada">La partida se ha guardado correctamente</string>
+
+    <!-- Recuperar Partida -->
+    <string name="txtDialogoRecuperarTitulo">Recuperar partida</string>
+    <string name="txtDialogoRecuperarPregunta">¿Desea cargar la partida guardada? Perderá el progreso de la actual</string>
+    <string name="txtSnackbarPartidaRecuperada">La partida se ha cargado correctamente</string>
+    <string name="txtSnackbarPartidaNoEncontrada">No existe ninguna partida guardada</string>
 
 </resources>
