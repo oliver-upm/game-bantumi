@@ -192,8 +192,13 @@ public class JuegoBantumi {
      * @return juego serializado
      */
     public String serializa() {
-        // @TODO
-        return null;
+        String juegoSerializado = "";
+        juegoSerializado = juegoSerializado.concat(this.turnoActual().toString() + ";");
+        for (int i = 0; i < NUM_POSICIONES; i++) {
+            juegoSerializado = juegoSerializado.concat(this.getSemillas(i) + ",");
+        }
+
+        return juegoSerializado;
     }
 
     /**

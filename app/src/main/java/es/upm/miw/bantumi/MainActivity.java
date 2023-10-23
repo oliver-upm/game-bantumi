@@ -18,12 +18,14 @@ import com.google.android.material.snackbar.Snackbar;
 import java.util.Locale;
 
 import es.upm.miw.bantumi.model.BantumiViewModel;
+import es.upm.miw.bantumi.utils.ManejadorMemoriaInterna;
 
 public class MainActivity extends AppCompatActivity {
 
     protected final String LOG_TAG = "MiW";
     JuegoBantumi juegoBantumi;
     BantumiViewModel bantumiVM;
+    ManejadorMemoriaInterna manejadorMemoriaInterna;
     int numInicialSemillas;
 
     @Override
@@ -36,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
         bantumiVM = new ViewModelProvider(this).get(BantumiViewModel.class);
         juegoBantumi = new JuegoBantumi(bantumiVM, JuegoBantumi.Turno.turnoJ1, numInicialSemillas);
         crearObservadores();
+        manejadorMemoriaInterna = new ManejadorMemoriaInterna();
     }
 
     /**
@@ -132,6 +135,11 @@ public class MainActivity extends AppCompatActivity {
                 ReiniciarDialogFragment reiniciarDialogFragment = new ReiniciarDialogFragment();
                 reiniciarDialogFragment.show(getSupportFragmentManager(), "frgReiniciar");
                 break;
+            case R.id.opcGuardarPartida:
+                Log.i(LOG_TAG, "opción GUARDAR");
+                GuardarPartidaDialogFragment guardarPartidaDialogFragment = new GuardarPartidaDialogFragment();
+                guardarPartidaDialogFragment.show(getSupportFragmentManager(), "frgGuardar");
+                break;
 
             // @TODO!!! resto opciones
 
@@ -148,6 +156,16 @@ public class MainActivity extends AppCompatActivity {
     protected void reiniciar() {
         Log.i(LOG_TAG, "reiniciando partida...");
         juegoBantumi.inicializar(JuegoBantumi.Turno.turnoJ1);
+    }
+
+    protected void guardarPartida() {
+        Log.i(LOG_TAG, "guardando partida...");
+        this.manejadorMemoriaInterna.guardarPartida(this.getApplicationContext(), juegoBantumi.serializa());
+        Snackbar.make(
+                findViewById(android.R.id.content),
+                getString(R.string.txtSnackbarPartidaGuardada),
+                Snackbar.LENGTH_LONG
+        ).show();
     }
 
     /**
