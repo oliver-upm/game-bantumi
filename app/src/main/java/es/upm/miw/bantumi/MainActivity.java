@@ -1,6 +1,8 @@
 package es.upm.miw.bantumi;
 
 import android.app.AlertDialog;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -12,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.preference.PreferenceManager;
 
 import com.google.android.material.snackbar.Snackbar;
 
@@ -27,22 +30,43 @@ import es.upm.miw.bantumi.utils.ManejadorMemoriaInterna;
 public class MainActivity extends AppCompatActivity {
 
     protected final String LOG_TAG = "MiW";
+    int numInicialSemillas;
     JuegoBantumi juegoBantumi;
     BantumiViewModel bantumiVM;
     ManejadorMemoriaInterna manejadorMemoriaInterna;
-    int numInicialSemillas;
+    SharedPreferences preferencias;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        preferencias = PreferenceManager.getDefaultSharedPreferences(this);
         // Instancia el ViewModel y el juego, y asigna observadores a los huecos
-        numInicialSemillas = getResources().getInteger(R.integer.intNumInicialSemillas);
+        cargarPreferencias();
         bantumiVM = new ViewModelProvider(this).get(BantumiViewModel.class);
         juegoBantumi = new JuegoBantumi(bantumiVM, JuegoBantumi.Turno.turnoJ1, numInicialSemillas);
-        crearObservadores();
         manejadorMemoriaInterna = new ManejadorMemoriaInterna();
+        crearObservadores();
+    }
+
+    private void cargarPreferencias() {
+        setNombreJugador();
+        this.numInicialSemillas = getNumInicialSemillas();
+    }
+
+    private void setNombreJugador() {
+        String nombreJugador1 = preferencias.getString(
+                getString(R.string.key_NombreJugador1),
+                getString(R.string.txtPlayer1));
+        TextView tvPlayer1 = findViewById(R.id.tvPlayer1);
+        tvPlayer1.setText(nombreJugador1);
+    }
+
+    private int getNumInicialSemillas() {
+        String numInicialSemillasStr = preferencias.getString(
+                getString(R.string.key_numIncialSemillas),
+                getString(R.string.default_numInicialSemillas));
+        return Integer.parseInt(numInicialSemillasStr);
     }
 
     /**
@@ -123,9 +147,11 @@ public class MainActivity extends AppCompatActivity {
 
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
-//            case R.id.opcAjustes: // @todo Preferencias
-//                startActivity(new Intent(this, BantumiPrefs.class));
-//                return true;
+            case R.id.opcAjustes:
+                Log.i(LOG_TAG, "opción AJUSTES");
+                Intent intent = new Intent(this, AjustesActivity.class);
+                startActivity(intent);
+                break;
             case R.id.opcAcercaDe:
                 Log.i(LOG_TAG, "opción ACERCA DE");
                 new AlertDialog.Builder(this)
@@ -168,7 +194,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void reiniciar() {
         Log.i(LOG_TAG, "reiniciando partida...");
-        juegoBantumi.inicializar(JuegoBantumi.Turno.turnoJ1);
+        juegoBantumi.reiniciar(JuegoBantumi.Turno.turnoJ1, getNumInicialSemillas());
     }
 
     public void guardarPartida() {

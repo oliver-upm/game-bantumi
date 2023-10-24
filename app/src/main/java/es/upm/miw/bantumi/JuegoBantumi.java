@@ -20,7 +20,7 @@ public class JuegoBantumi {
     }
 
     // Número inicial de semillas
-    private final int numInicialSemillas;
+    private int numInicialSemillas;
     private boolean juegoEmpezado = false;
 
     /**
@@ -69,9 +69,14 @@ public class JuegoBantumi {
                     i,
                     (i == 6 || i == 13) // Almacén??
                             ? 0
-                            : numInicialSemillas
+                            : this.numInicialSemillas
             );
         this.juegoEmpezado = false;
+    }
+
+    public void reiniciar(Turno turn, Integer numInicialSemillas) {
+        this.numInicialSemillas = numInicialSemillas;
+        this.inicializar(turn);
     }
 
     /**

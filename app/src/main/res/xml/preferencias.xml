@@ -1,0 +1,24 @@
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <PreferenceCategory app:title="Ajustes del juego">
+        <ListPreference
+            app:key="@string/key_numIncialSemillas"
+            app:title="@string/numIncialSemillasTitle"
+            app:defaultValue="@string/default_numInicialSemillas"
+            app:entries="@array/reply_entries"
+            app:entryValues="@array/reply_values"
+            app:useSimpleSummaryProvider="true" />
+
+    </PreferenceCategory>
+
+
+    <PreferenceCategory app:title="Nombres de jugadores">
+        <EditTextPreference
+            app:key="@string/key_NombreJugador1"
+            app:title="@string/nombreJugador1Title"
+            app:defaultValue="@string/txtPlayer1"
+            app:useSimpleSummaryProvider="true" />
+
+    </PreferenceCategory>
+
+</PreferenceScreen>
