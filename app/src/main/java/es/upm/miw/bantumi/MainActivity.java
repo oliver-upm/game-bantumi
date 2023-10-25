@@ -82,8 +82,8 @@ public class MainActivity extends AppCompatActivity {
     private void setTurnoInicial() {
         String turno = preferencias.getString(
                 getString(R.string.key_TurnoInicial),
-                JuegoBantumi.Turno.turnoJ1.name());
-        this.turnoInicial = JuegoBantumi.Turno.valueOf(turno);
+                getString(R.string.default_txtInitialTurn));
+        this.turnoInicial = this.turnoInicial.valueOf(turno);
     }
 
     /**
@@ -166,8 +166,7 @@ public class MainActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.opcAjustes:
                 Log.i(LOG_TAG, "opción AJUSTES");
-                Intent intent = new Intent(this, AjustesActivity.class);
-                startActivity(intent);
+                startActivity(new Intent(this, AjustesActivity.class));
                 break;
             case R.id.opcAcercaDe:
                 Log.i(LOG_TAG, "opción ACERCA DE");
@@ -196,9 +195,10 @@ public class MainActivity extends AppCompatActivity {
                     this.recuperarPartida();
                 }
                 break;
-
-            // @TODO!!! resto opciones
-
+            case R.id.opcMejoresResultados:
+                Log.i(LOG_TAG, "opción MEJORES RESULTADOS");
+                startActivity(new Intent(this, ResultadoActivity.class));
+                break;
             default:
                 Snackbar.make(
                         findViewById(android.R.id.content),

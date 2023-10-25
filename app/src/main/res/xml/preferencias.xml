@@ -15,7 +15,7 @@
             app:title="@string/TurnoInicialTitle"
             app:entries="@array/turno_entries"
             app:entryValues="@array/turno_values"
-            app:defaultValue="@string/txtPlayer1"
+            app:defaultValue="@string/default_txtInitialTurn"
             app:useSimpleSummaryProvider="true" />
     </PreferenceCategory>
 

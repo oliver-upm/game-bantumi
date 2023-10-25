@@ -8,6 +8,7 @@
     <!-- Valores del juego -->
     <integer name="default_numInicialSemillas">4</integer>
     <string name="txtInitialScore">0</string>
+    <string name="default_txtInitialTurn">turnoJ1</string>
 
     <!-- Mensaje opción sin implementar -->
     <string name="txtSinImplementar">¡No implementado aún!</string>
@@ -65,5 +66,7 @@
     <string name="txtDialogoRecuperarPregunta">¿Desea cargar la partida guardada? Perderá el progreso de la actual</string>
     <string name="txtSnackbarPartidaRecuperada">La partida se ha cargado correctamente</string>
     <string name="txtSnackbarPartidaNoEncontrada">No existe ninguna partida guardada</string>
+    <string name="label_resultados">Mejores resultados</string>
+    <string name="label_ajustes">Ajustes</string>
 
 </resources>

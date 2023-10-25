@@ -11,6 +11,8 @@ public class AjustesActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ajustes);
+        setTitle(getString(R.string.label_ajustes));
+
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.ajustes, new AjustesFragment())

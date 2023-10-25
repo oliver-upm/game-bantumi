@@ -16,9 +16,9 @@ public class Resultado {
     @ColumnInfo(name = "id")
     private int id;
 
-    @ColumnInfo(name = "fechaHoraPartida")
+    @ColumnInfo(name = "fecha")
     @TypeConverters(Converters.class)
-    private Date fechaHoraPartida;
+    private Date fecha;
 
     @ColumnInfo(name = "nombreGanador")
     private String nombreGanador;
@@ -32,8 +32,8 @@ public class Resultado {
     @ColumnInfo(name = "numSemillasPerdedor")
     private int numSemillasPerdedor;
 
-    public Resultado(Date fechaHoraPartida, String nombreGanador, int numSemillasGanador, String nombrePerdedor, int numSemillasPerdedor) {
-        this.fechaHoraPartida = fechaHoraPartida;
+    public Resultado(Date fecha, String nombreGanador, int numSemillasGanador, String nombrePerdedor, int numSemillasPerdedor) {
+        this.fecha = fecha;
         this.nombreGanador = nombreGanador;
         this.numSemillasGanador = numSemillasGanador;
         this.nombrePerdedor = nombrePerdedor;
@@ -48,12 +48,12 @@ public class Resultado {
         this.id = id;
     }
 
-    public Date getFechaHoraPartida() {
-        return fechaHoraPartida;
+    public Date getFecha() {
+        return fecha;
     }
 
-    public void setFechaHoraPartida(Date fechaHoraPartida) {
-        this.fechaHoraPartida = fechaHoraPartida;
+    public void setFecha(Date fecha) {
+        this.fecha = fecha;
     }
 
     public String getNombreGanador() {
@@ -64,7 +64,7 @@ public class Resultado {
         this.nombreGanador = nombreGanador;
     }
 
-    public int getNumSemillasGanador() {
+    public Integer getNumSemillasGanador() {
         return numSemillasGanador;
     }
 
@@ -80,7 +80,7 @@ public class Resultado {
         this.nombrePerdedor = nombrePerdedor;
     }
 
-    public int getNumSemillasPerdedor() {
+    public Integer getNumSemillasPerdedor() {
         return numSemillasPerdedor;
     }
 
