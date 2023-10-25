@@ -18,6 +18,7 @@ import androidx.preference.PreferenceManager;
 
 import com.google.android.material.snackbar.Snackbar;
 
+import java.util.Date;
 import java.util.Locale;
 
 import es.upm.miw.bantumi.dialogs.FinalAlertDialog;
@@ -25,6 +26,8 @@ import es.upm.miw.bantumi.dialogs.GuardarPartidaDialogFragment;
 import es.upm.miw.bantumi.dialogs.RecuperarPartidaDialogFragment;
 import es.upm.miw.bantumi.dialogs.ReiniciarDialogFragment;
 import es.upm.miw.bantumi.model.BantumiViewModel;
+import es.upm.miw.bantumi.model.Resultado;
+import es.upm.miw.bantumi.model.ResultadoViewModel;
 import es.upm.miw.bantumi.utils.ManejadorMemoriaInterna;
 
 public class MainActivity extends AppCompatActivity {
@@ -36,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
     BantumiViewModel bantumiVM;
     ManejadorMemoriaInterna manejadorMemoriaInterna;
     SharedPreferences preferencias;
+    ResultadoViewModel resultadoViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
         juegoBantumi = new JuegoBantumi(bantumiVM, turnoInicial, numInicialSemillas);
         manejadorMemoriaInterna = new ManejadorMemoriaInterna();
         crearObservadores();
+        resultadoViewModel = new ViewModelProvider(this).get(ResultadoViewModel.class);
     }
 
     private void cargarPreferencias() {
@@ -57,11 +62,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setNombreJugador() {
-        String nombreJugador1 = preferencias.getString(
+        TextView tvPlayer1 = findViewById(R.id.tvPlayer1);
+        tvPlayer1.setText(getNombreJugador());
+    }
+
+    private String getNombreJugador() {
+        return preferencias.getString(
                 getString(R.string.key_NombreJugador1),
                 getString(R.string.txtPlayer1));
-        TextView tvPlayer1 = findViewById(R.id.tvPlayer1);
-        tvPlayer1.setText(nombreJugador1);
     }
 
     private void setNumInicialSemillas() {
@@ -278,9 +286,21 @@ public class MainActivity extends AppCompatActivity {
      * El juego ha terminado. Volver a jugar?
      */
     private void finJuego() {
-        String texto = (juegoBantumi.getSemillas(6) > 6 * numInicialSemillas)
-                ? "Gana Jugador 1"
-                : "Gana Jugador 2";
+        String nombreGanador, nombrePerdedor;
+        int posGanador, posPerdedor;
+        if (juegoBantumi.getSemillas(6) > 6 * numInicialSemillas) {
+            nombreGanador = this.getNombreJugador();
+            nombrePerdedor = getString(R.string.txtPlayer2);
+            posGanador = 6;
+            posPerdedor = 13;
+        } else {
+            nombreGanador = getString(R.string.txtPlayer2);
+            nombrePerdedor = this.getNombreJugador();
+            posGanador = 13;
+            posPerdedor = 6;
+        }
+
+        String texto = "¡¡¡ " + nombreGanador + " GANA !!!";
         if (juegoBantumi.getSemillas(6) == 6 * numInicialSemillas) {
             texto = "¡¡¡ EMPATE !!!";
         }
@@ -291,7 +311,14 @@ public class MainActivity extends AppCompatActivity {
                 )
                 .show();
 
-        // @TODO guardar puntuación
+        Resultado resultado = new Resultado(
+                new Date(),
+                nombreGanador,
+                juegoBantumi.getSemillas(posGanador),
+                nombrePerdedor,
+                juegoBantumi.getSemillas(posPerdedor)
+        );
+        this.resultadoViewModel.insert(resultado);
 
         // terminar
         new FinalAlertDialog().show(getSupportFragmentManager(), "ALERT_DIALOG");
