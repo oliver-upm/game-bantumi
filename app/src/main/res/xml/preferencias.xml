@@ -1,24 +1,30 @@
-<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
     <PreferenceCategory app:title="Ajustes del juego">
-        <ListPreference
-            app:key="@string/key_numIncialSemillas"
+        <SeekBarPreference
+            app:defaultValue="@integer/default_numInicialSemillas"
+            app:showSeekBarValue="true"
             app:title="@string/numIncialSemillasTitle"
-            app:defaultValue="@string/default_numInicialSemillas"
-            app:entries="@array/reply_entries"
-            app:entryValues="@array/reply_values"
-            app:useSimpleSummaryProvider="true" />
+            app:key="@string/key_numIncialSemillas"
+            app:min = "1"
+            android:max = "8"/>
 
-    </PreferenceCategory>
-
-
-    <PreferenceCategory app:title="Nombres de jugadores">
-        <EditTextPreference
-            app:key="@string/key_NombreJugador1"
-            app:title="@string/nombreJugador1Title"
+        <ListPreference
+            app:key="@string/key_TurnoInicial"
+            app:title="@string/TurnoInicialTitle"
+            app:entries="@array/turno_entries"
+            app:entryValues="@array/turno_values"
             app:defaultValue="@string/txtPlayer1"
             app:useSimpleSummaryProvider="true" />
+    </PreferenceCategory>
 
+    <PreferenceCategory app:title="Personalización">
+        <EditTextPreference
+            app:defaultValue="@string/txtPlayer1"
+            app:key="@string/key_NombreJugador1"
+            app:title="@string/nombreJugador1Title"
+            app:useSimpleSummaryProvider="true" />
     </PreferenceCategory>
 
 </PreferenceScreen>

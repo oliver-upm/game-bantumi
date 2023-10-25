@@ -32,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
     protected final String LOG_TAG = "MiW";
     int numInicialSemillas;
     JuegoBantumi juegoBantumi;
+    JuegoBantumi.Turno turnoInicial;
     BantumiViewModel bantumiVM;
     ManejadorMemoriaInterna manejadorMemoriaInterna;
     SharedPreferences preferencias;
@@ -41,17 +42,18 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         preferencias = PreferenceManager.getDefaultSharedPreferences(this);
-        // Instancia el ViewModel y el juego, y asigna observadores a los huecos
         cargarPreferencias();
+        // Instancia el ViewModel y el juego, y asigna observadores a los huecos
         bantumiVM = new ViewModelProvider(this).get(BantumiViewModel.class);
-        juegoBantumi = new JuegoBantumi(bantumiVM, JuegoBantumi.Turno.turnoJ1, numInicialSemillas);
+        juegoBantumi = new JuegoBantumi(bantumiVM, turnoInicial, numInicialSemillas);
         manejadorMemoriaInterna = new ManejadorMemoriaInterna();
         crearObservadores();
     }
 
     private void cargarPreferencias() {
         setNombreJugador();
-        this.numInicialSemillas = getNumInicialSemillas();
+        setNumInicialSemillas();
+        setTurnoInicial();
     }
 
     private void setNombreJugador() {
@@ -62,11 +64,18 @@ public class MainActivity extends AppCompatActivity {
         tvPlayer1.setText(nombreJugador1);
     }
 
-    private int getNumInicialSemillas() {
-        String numInicialSemillasStr = preferencias.getString(
+    private void setNumInicialSemillas() {
+        int numInicialSemillas = preferencias.getInt(
                 getString(R.string.key_numIncialSemillas),
-                getString(R.string.default_numInicialSemillas));
-        return Integer.parseInt(numInicialSemillasStr);
+                getResources().getInteger(R.integer.default_numInicialSemillas));
+        this.numInicialSemillas = numInicialSemillas;
+    }
+
+    private void setTurnoInicial() {
+        String turno = preferencias.getString(
+                getString(R.string.key_TurnoInicial),
+                JuegoBantumi.Turno.turnoJ1.name());
+        this.turnoInicial = JuegoBantumi.Turno.valueOf(turno);
     }
 
     /**
@@ -194,7 +203,8 @@ public class MainActivity extends AppCompatActivity {
 
     public void reiniciar() {
         Log.i(LOG_TAG, "reiniciando partida...");
-        juegoBantumi.reiniciar(JuegoBantumi.Turno.turnoJ1, getNumInicialSemillas());
+        cargarPreferencias();
+        juegoBantumi.reiniciar(this.turnoInicial, this.numInicialSemillas);
     }
 
     public void guardarPartida() {

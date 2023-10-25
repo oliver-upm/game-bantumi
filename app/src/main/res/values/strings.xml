@@ -6,7 +6,7 @@
     <string name="txtBtnReset">Reset</string>
 
     <!-- Valores del juego -->
-    <string name="default_numInicialSemillas">4</string>
+    <integer name="default_numInicialSemillas">4</integer>
     <string name="txtInitialScore">0</string>
 
     <!-- Mensaje opción sin implementar -->
@@ -37,11 +37,15 @@
     </string>
 
     <!-- Preferencias -->
+    <!-- Número inicial se semillas -->
     <string name="key_numIncialSemillas">numInicialSemillas</string>
     <string name="numIncialSemillasTitle">Número inicial de semillas</string>
-
+    <!-- Nombre del jugador -->
     <string name="key_NombreJugador1">nombreJugador1</string>
     <string name="nombreJugador1Title">Nombre jugador 1</string>
+    <!-- Jugador hace el primer movimiento -->
+    <string name="key_TurnoInicial">turnoInicial</string>
+    <string name="TurnoInicialTitle">Jugador que hace el primer movimiento</string>
 
     <!-- Diálogo Final -->
     <string name="txtDialogoFinalTitulo">Fin del juego</string>

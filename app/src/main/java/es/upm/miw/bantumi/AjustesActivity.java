@@ -15,6 +15,15 @@ public class AjustesActivity extends AppCompatActivity {
                 .beginTransaction()
                 .replace(R.id.ajustes, new AjustesFragment())
                 .commit();
+        if(getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        finish();
+        return true;
     }
 
     public static class AjustesFragment extends PreferenceFragmentCompat {
