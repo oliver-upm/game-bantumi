@@ -1,9 +1,11 @@
-<!-- res/layout/resultado_recyclerview_item.xml -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="14dp">
+    android:padding="16dp"
+    android:background="@drawable/rounded_background"
+    android:layout_marginBottom="5dp"
+    android:gravity="center_vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -14,8 +16,10 @@
             android:id="@+id/textViewFecha"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="14:40 23/12/2022"
-            android:textSize="16sp" />
+            android:text="Wed Oct 25 17:02:45 GMT 2023"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="@android:color/black" />
     </LinearLayout>
 
     <LinearLayout
@@ -29,23 +33,29 @@
             android:layout_height="wrap_content"
             android:layout_weight="3"
             android:text="Jugador 1"
-            android:textSize="16sp" />
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="@android:color/holo_green_dark"
+            android:layout_marginEnd="4dp" />
 
-        <!-- Número del ganador -->
         <TextView
             android:id="@+id/textViewNumSemillasGanador"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="24"
-            android:textSize="16sp" />
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="@android:color/holo_green_dark"
+            android:layout_marginEnd="8dp" />
 
         <ImageView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:src="@drawable/separador_guion"
-            android:contentDescription="-" />
+            android:contentDescription="-"
+            android:layout_marginEnd="10dp"/>
 
         <TextView
             android:id="@+id/textViewPerdedor"
@@ -53,7 +63,10 @@
             android:layout_height="wrap_content"
             android:layout_weight="3"
             android:text="Jugador 2"
-            android:textSize="16sp" />
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="@android:color/holo_red_dark"
+            android:layout_marginEnd="4dp" />
 
         <TextView
             android:id="@+id/textViewNumSemillasPerdedor"
@@ -61,6 +74,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="12"
-            android:textSize="16sp" />
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="@android:color/holo_red_dark" />
     </LinearLayout>
 </LinearLayout>

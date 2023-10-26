@@ -38,6 +38,7 @@
     </string>
 
     <!-- Preferencias -->
+    <string name="label_ajustes">Ajustes</string>
     <!-- Número inicial se semillas -->
     <string name="key_numIncialSemillas">numInicialSemillas</string>
     <string name="numIncialSemillasTitle">Número inicial de semillas</string>
@@ -66,7 +67,14 @@
     <string name="txtDialogoRecuperarPregunta">¿Desea cargar la partida guardada? Perderá el progreso de la actual</string>
     <string name="txtSnackbarPartidaRecuperada">La partida se ha cargado correctamente</string>
     <string name="txtSnackbarPartidaNoEncontrada">No existe ninguna partida guardada</string>
+
+    <!-- Mejores Resultados -->
     <string name="label_resultados">Mejores resultados</string>
-    <string name="label_ajustes">Ajustes</string>
+    <string name="borrarResultados">Borrar resultados</string>
+
+    <!-- Diálogo Borrar Resultados -->
+    <string name="txtDialogoBorrarResultadosTitulo">Borrar resultados</string>
+    <string name="txtDialogoBorrarResultadosPregunta">¿Desea borrar todos los resultados?</string>
+    <string name="txtSnackbarBorrarResultados">Se han borrado todos los resultados</string>
 
 </resources>

@@ -32,7 +32,7 @@ import es.upm.miw.bantumi.utils.ManejadorMemoriaInterna;
 
 public class MainActivity extends AppCompatActivity {
 
-    protected final String LOG_TAG = "MiW";
+    protected static final String LOG_TAG = "MiW";
     int numInicialSemillas;
     JuegoBantumi juegoBantumi;
     JuegoBantumi.Turno turnoInicial;
@@ -319,7 +319,7 @@ public class MainActivity extends AppCompatActivity {
                 juegoBantumi.getSemillas(posPerdedor)
         );
         this.resultadoViewModel.insert(resultado);
-
+        Log.i(LOG_TAG, "resultado insertado en la base de datos");
         // terminar
         new FinalAlertDialog().show(getSupportFragmentManager(), "ALERT_DIALOG");
     }

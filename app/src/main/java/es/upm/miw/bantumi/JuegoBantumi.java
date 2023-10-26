@@ -92,7 +92,7 @@ public class JuegoBantumi {
                 || (pos > 6 && turnoActual() != Turno.turnoJ2)
         )
             return;
-        Log.i("MiW", String.format("jugar(%02d)", pos));
+        Log.i(MainActivity.LOG_TAG, String.format("jugar(%02d)", pos));
         this.juegoEmpezado = true;
 
         // Recoger semillas en posición pos
@@ -118,7 +118,7 @@ public class JuegoBantumi {
                     || (turnoActual() == Turno.turnoJ2 && nextPos > 6 && nextPos < 13))
         ) {
             int posContrario = 12 - nextPos;
-            Log.i("MiW", "\trecoger: turno=" + turnoActual() + ", pos=" + nextPos + ", contrario=" + posContrario);
+            Log.i(MainActivity.LOG_TAG, "\trecoger: turno=" + turnoActual() + ", pos=" + nextPos + ", contrario=" + posContrario);
             int miAlmacen = (turnoActual() == Turno.turnoJ1) ? 6 : 13;
             setSemillas(
                     miAlmacen,
@@ -140,7 +140,7 @@ public class JuegoBantumi {
             setTurno(Turno.turnoJ2);
         else if (turnoActual() == Turno.turnoJ2 && nextPos != 13)
             setTurno(Turno.turnoJ1);
-        Log.i("MiW", "\t turno = " + turnoActual());
+        Log.i(MainActivity.LOG_TAG, "\t turno = " + turnoActual());
     }
 
     /**
@@ -175,7 +175,7 @@ public class JuegoBantumi {
             setSemillas(i, 0);
         }
         setSemillas(pos + 6, semillasAlmacen);
-        Log.i("MiW", "\tRecolectar - " + pos);
+        Log.i(MainActivity.LOG_TAG, "\tRecolectar - " + pos);
     }
 
     /**

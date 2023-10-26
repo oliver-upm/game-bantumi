@@ -1,6 +1,7 @@
 package es.upm.miw.bantumi;
 
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.PreferenceFragmentCompat;
@@ -25,6 +26,7 @@ public class AjustesActivity extends AppCompatActivity {
     @Override
     public boolean onSupportNavigateUp() {
         finish();
+        Log.i(MainActivity.LOG_TAG, "volviendo a la actividad principal desde ajustes");
         return true;
     }
 
