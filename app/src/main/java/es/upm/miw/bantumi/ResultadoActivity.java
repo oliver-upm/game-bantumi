@@ -4,6 +4,10 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
@@ -17,7 +21,9 @@ import es.upm.miw.bantumi.model.ResultadoViewModel;
 import es.upm.miw.bantumi.views.ResultadoListAdapter;
 
 public class ResultadoActivity extends AppCompatActivity {
-    private ResultadoViewModel resultViewModel;
+
+    private ResultadoViewModel resultadoViewModel;
+    private ResultadoListAdapter resultadoListAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,11 +36,36 @@ public class ResultadoActivity extends AppCompatActivity {
         }
 
         RecyclerView recyclerView = findViewById(R.id.resultado_recyclerview);
-        final ResultadoListAdapter adapter = new ResultadoListAdapter(new ResultadoListAdapter.GameResultDiff());
-        recyclerView.setAdapter(adapter);
+        this.resultadoListAdapter = new ResultadoListAdapter(new ResultadoListAdapter.GameResultDiff());
+        recyclerView.setAdapter(resultadoListAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        this.resultViewModel = new ViewModelProvider(this).get(ResultadoViewModel.class);
-        resultViewModel.getTop10().observe(this, adapter::submitList);
+        this.resultadoViewModel = new ViewModelProvider(this).get(ResultadoViewModel.class);
+
+        filtroSemillas();
+    }
+
+    private void filtroSemillas() {
+        Spinner spinnerSemillas = findViewById(R.id.spinnerSemillas);
+        ArrayAdapter<CharSequence> spinnerAdapter = ArrayAdapter.createFromResource(this, R.array.semillas_spinner, android.R.layout.simple_spinner_item);
+        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerSemillas.setAdapter(spinnerAdapter);
+        spinnerSemillas.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                if (position > 0) {
+                    int numeroSemillasSeleccionado = Integer.parseInt(parentView.getItemAtPosition(position).toString());
+                    Log.i(MainActivity.LOG_TAG, "filtrando por " + numeroSemillasSeleccionado + " semillas");
+                    resultadoViewModel.getTop10BySeeds(numeroSemillasSeleccionado).observe(ResultadoActivity.this, resultadoListAdapter::submitList);
+                } else {
+                    resultadoViewModel.getTop10().observe(ResultadoActivity.this, resultadoListAdapter::submitList);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parentView) {
+                resultadoViewModel.getTop10().observe(ResultadoActivity.this, resultadoListAdapter::submitList);
+            }
+        });
     }
 
     @Override
@@ -62,7 +93,7 @@ public class ResultadoActivity extends AppCompatActivity {
 
     public void borrarTodo() {
         Log.i(MainActivity.LOG_TAG, "borrando todos los resultados...");
-        this.resultViewModel.deleteAll();
+        this.resultadoViewModel.deleteAll();
         Snackbar.make(
                 findViewById(android.R.id.content),
                 getString(R.string.txtSnackbarBorrarResultados),

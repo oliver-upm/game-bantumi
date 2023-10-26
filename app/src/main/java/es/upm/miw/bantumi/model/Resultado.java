@@ -32,12 +32,16 @@ public class Resultado {
     @ColumnInfo(name = "numSemillasPerdedor")
     private int numSemillasPerdedor;
 
-    public Resultado(Date fecha, String nombreGanador, int numSemillasGanador, String nombrePerdedor, int numSemillasPerdedor) {
+    @ColumnInfo(name = "numSemillasPartida")
+    private int numSemillasPartida;
+
+    public Resultado(Date fecha, String nombreGanador, int numSemillasGanador, String nombrePerdedor, int numSemillasPerdedor, int numSemillasPartida) {
         this.fecha = fecha;
         this.nombreGanador = nombreGanador;
         this.numSemillasGanador = numSemillasGanador;
         this.nombrePerdedor = nombrePerdedor;
         this.numSemillasPerdedor = numSemillasPerdedor;
+        this.numSemillasPartida = numSemillasPartida;
     }
 
     public int getId() {
@@ -86,5 +90,13 @@ public class Resultado {
 
     public void setNumSemillasPerdedor(int numSemillasPerdedor) {
         this.numSemillasPerdedor = numSemillasPerdedor;
+    }
+
+    public Integer getNumSemillasPartida() {
+        return numSemillasPartida;
+    }
+
+    public void setNumSemillasPartida(int numSemillasPartida) {
+        this.numSemillasPartida = numSemillasPartida;
     }
 }

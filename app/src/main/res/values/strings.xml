@@ -71,6 +71,7 @@
     <!-- Mejores Resultados -->
     <string name="label_resultados">Mejores resultados</string>
     <string name="borrarResultados">Borrar resultados</string>
+    <string name="txtFiltroSemillas">Filtrar por semillas</string>
 
     <!-- Diálogo Borrar Resultados -->
     <string name="txtDialogoBorrarResultadosTitulo">Borrar resultados</string>

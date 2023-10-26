@@ -32,4 +32,8 @@ public class ResultadoRepository {
     LiveData<List<Resultado>> getTop10() {
         return this.mejoresResultados;
     }
+
+    LiveData<List<Resultado>> getTop10BySeeds(int numSemillasSeleccionado) {
+        return this.resultadoDAO.getTop10BySeeds(numSemillasSeleccionado);
+    }
 }

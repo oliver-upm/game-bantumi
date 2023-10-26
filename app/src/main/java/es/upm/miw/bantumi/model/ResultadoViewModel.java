@@ -29,4 +29,8 @@ public class ResultadoViewModel extends AndroidViewModel {
     public LiveData<List<Resultado>> getTop10() {
         return this.mejoresResultados;
     }
+
+    public LiveData<List<Resultado>> getTop10BySeeds(int numSemillasSeleccionado) {
+        return this.resultadoRepository.getTop10BySeeds(numSemillasSeleccionado);
+    }
 }

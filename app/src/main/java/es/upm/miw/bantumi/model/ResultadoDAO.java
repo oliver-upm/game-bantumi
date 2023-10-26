@@ -19,4 +19,7 @@ public interface ResultadoDAO {
 
     @Query("SELECT * FROM resultado_table ORDER BY numSemillasGanador DESC LIMIT 10")
     LiveData<List<Resultado>> getTop10();
+
+    @Query("SELECT * FROM resultado_table WHERE numSemillasPartida = :numSemillasSeleccionado ORDER BY numSemillasGanador ASC LIMIT 10")
+    LiveData<List<Resultado>> getTop10BySeeds(int numSemillasSeleccionado);
 }

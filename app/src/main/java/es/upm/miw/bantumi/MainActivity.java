@@ -231,6 +231,7 @@ public class MainActivity extends AppCompatActivity {
         String msgSnackbar;
         if (partidaSerializada != null) {
             juegoBantumi.deserializa(partidaSerializada);
+            this.numInicialSemillas = juegoBantumi.getNumInicialSemillas();
             msgSnackbar = getString(R.string.txtSnackbarPartidaRecuperada);
         } else {
             msgSnackbar = getString(R.string.txtSnackbarPartidaNoEncontrada);
@@ -316,7 +317,8 @@ public class MainActivity extends AppCompatActivity {
                 nombreGanador,
                 juegoBantumi.getSemillas(posGanador),
                 nombrePerdedor,
-                juegoBantumi.getSemillas(posPerdedor)
+                juegoBantumi.getSemillas(posPerdedor),
+                this.numInicialSemillas
         );
         this.resultadoViewModel.insert(resultado);
         Log.i(LOG_TAG, "resultado insertado en la base de datos");
