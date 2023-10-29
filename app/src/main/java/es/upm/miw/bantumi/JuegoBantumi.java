@@ -21,6 +21,7 @@ public class JuegoBantumi {
 
     // Número inicial de semillas
     private int numInicialSemillas;
+    private String nombreJugador1;
     private boolean juegoEmpezado = false;
 
     /**
@@ -31,9 +32,10 @@ public class JuegoBantumi {
      * @param turno especifica el turno inicial <code>[Turno.turnoJ1 || Turno.turnoJ2]</code>
      * @param numInicialSemillas Número de semillas al inicio del juego
      */
-    public JuegoBantumi(BantumiViewModel bantumiVM, Turno turno, int numInicialSemillas) {
+    public JuegoBantumi(BantumiViewModel bantumiVM, Turno turno, int numInicialSemillas, String nombreJugador1) {
         this.bantumiVM = bantumiVM;
         this.numInicialSemillas = numInicialSemillas;
+        this.nombreJugador1 = nombreJugador1;
         if (campoVacio(Turno.turnoJ1) && campoVacio(Turno.turnoJ2)) { // Inicializa sólo si está vacío!!!
             inicializar(turno);
         }
@@ -74,8 +76,9 @@ public class JuegoBantumi {
         this.juegoEmpezado = false;
     }
 
-    public void reiniciar(Turno turn, Integer numInicialSemillas) {
+    public void reiniciar(Turno turn, Integer numInicialSemillas, String nombreJugador1) {
         this.numInicialSemillas = numInicialSemillas;
+        this.nombreJugador1 = nombreJugador1;
         this.inicializar(turn);
     }
 
@@ -202,6 +205,10 @@ public class JuegoBantumi {
         return numInicialSemillas;
     }
 
+    public String getNombreJugador1() {
+        return nombreJugador1;
+    }
+
     /**
      * Devuelve una cadena que representa el estado completo del juego
      *
@@ -212,6 +219,7 @@ public class JuegoBantumi {
         juegoSerializado = juegoSerializado.concat(this.juegoEmpezado + ";" );
         juegoSerializado = juegoSerializado.concat(this.numInicialSemillas + ";");
         juegoSerializado = juegoSerializado.concat(this.turnoActual().toString() + ";");
+        juegoSerializado = juegoSerializado.concat(this.nombreJugador1 + ";");
         for (int i = 0; i < NUM_POSICIONES; i++) {
             juegoSerializado = juegoSerializado.concat(this.getSemillas(i) + ",");
         }
@@ -229,7 +237,8 @@ public class JuegoBantumi {
         this.juegoEmpezado = Boolean.parseBoolean(juego[0]);
         this.numInicialSemillas = Integer.parseInt(juego[1]);
         this.setTurno(Turno.valueOf(juego[2]));
-        String[] semillas = juego[3].split(",");
+        this.nombreJugador1 = juego[3];
+        String[] semillas = juego[4].split(",");
         for (int i = 0; i < NUM_POSICIONES; i++) {
             this.setSemillas(i, Integer.parseInt(semillas[i]));
         }

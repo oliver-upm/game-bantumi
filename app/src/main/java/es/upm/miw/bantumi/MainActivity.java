@@ -34,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
 
     protected static final String LOG_TAG = "MiW";
     int numInicialSemillas;
+    String nombreJugador1;
     JuegoBantumi juegoBantumi;
     JuegoBantumi.Turno turnoInicial;
     BantumiViewModel bantumiVM;
@@ -49,41 +50,48 @@ public class MainActivity extends AppCompatActivity {
         cargarPreferencias();
         // Instancia el ViewModel y el juego, y asigna observadores a los huecos
         bantumiVM = new ViewModelProvider(this).get(BantumiViewModel.class);
-        juegoBantumi = new JuegoBantumi(bantumiVM, turnoInicial, numInicialSemillas);
+        juegoBantumi = new JuegoBantumi(bantumiVM, turnoInicial, numInicialSemillas, nombreJugador1);
         manejadorMemoriaInterna = new ManejadorMemoriaInterna();
         crearObservadores();
         resultadoViewModel = new ViewModelProvider(this).get(ResultadoViewModel.class);
     }
 
     private void cargarPreferencias() {
-        setNombreJugador();
-        setNumInicialSemillas();
-        setTurnoInicial();
+        setNombreJugador(getNombreJugadorPreferencias());
+        setNumInicialSemillas(getNumInicialSemillasPreferencias());
+        setTurnoInicial(setTurnoInicialPreferencias());
     }
 
-    private void setNombreJugador() {
+    private void setNombreJugador(String nombreJugador1) {
         TextView tvPlayer1 = findViewById(R.id.tvPlayer1);
-        tvPlayer1.setText(getNombreJugador());
+        tvPlayer1.setText(nombreJugador1);
+        this.nombreJugador1 = nombreJugador1;
     }
 
-    private String getNombreJugador() {
+    private String getNombreJugadorPreferencias() {
         return preferencias.getString(
                 getString(R.string.key_NombreJugador1),
                 getString(R.string.txtPlayer1));
     }
 
-    private void setNumInicialSemillas() {
-        int numInicialSemillas = preferencias.getInt(
-                getString(R.string.key_numIncialSemillas),
-                getResources().getInteger(R.integer.default_numInicialSemillas));
+    private void setNumInicialSemillas(int numInicialSemillas) {
         this.numInicialSemillas = numInicialSemillas;
     }
 
-    private void setTurnoInicial() {
+    private int getNumInicialSemillasPreferencias() {
+        return preferencias.getInt(
+                getString(R.string.key_numIncialSemillas),
+                getResources().getInteger(R.integer.default_numInicialSemillas));
+    }
+
+    private void setTurnoInicial(JuegoBantumi.Turno turno) {
+        this.turnoInicial = turno;
+    }
+    private JuegoBantumi.Turno setTurnoInicialPreferencias() {
         String turno = preferencias.getString(
                 getString(R.string.key_TurnoInicial),
                 getString(R.string.default_txtInitialTurn));
-        this.turnoInicial = this.turnoInicial.valueOf(turno);
+        return this.turnoInicial.valueOf(turno);
     }
 
     /**
@@ -212,7 +220,7 @@ public class MainActivity extends AppCompatActivity {
     public void reiniciar() {
         Log.i(LOG_TAG, "reiniciando partida...");
         cargarPreferencias();
-        juegoBantumi.reiniciar(this.turnoInicial, this.numInicialSemillas);
+        juegoBantumi.reiniciar(this.turnoInicial, this.numInicialSemillas, this.nombreJugador1);
     }
 
     public void guardarPartida() {
@@ -231,7 +239,8 @@ public class MainActivity extends AppCompatActivity {
         String msgSnackbar;
         if (partidaSerializada != null) {
             juegoBantumi.deserializa(partidaSerializada);
-            this.numInicialSemillas = juegoBantumi.getNumInicialSemillas();
+            setNumInicialSemillas(juegoBantumi.getNumInicialSemillas());
+            setNombreJugador(juegoBantumi.getNombreJugador1());
             msgSnackbar = getString(R.string.txtSnackbarPartidaRecuperada);
         } else {
             msgSnackbar = getString(R.string.txtSnackbarPartidaNoEncontrada);
@@ -290,13 +299,13 @@ public class MainActivity extends AppCompatActivity {
         String nombreGanador, nombrePerdedor;
         int posGanador, posPerdedor;
         if (juegoBantumi.getSemillas(6) > 6 * numInicialSemillas) {
-            nombreGanador = this.getNombreJugador();
+            nombreGanador = this.nombreJugador1;
             nombrePerdedor = getString(R.string.txtPlayer2);
             posGanador = 6;
             posPerdedor = 13;
         } else {
             nombreGanador = getString(R.string.txtPlayer2);
-            nombrePerdedor = this.getNombreJugador();
+            nombrePerdedor = this.nombreJugador1;
             posGanador = 13;
             posPerdedor = 6;
         }
