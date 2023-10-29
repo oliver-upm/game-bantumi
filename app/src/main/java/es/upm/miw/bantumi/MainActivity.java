@@ -3,6 +3,7 @@ package es.upm.miw.bantumi;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -12,6 +13,8 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+import androidx.core.view.ViewCompat;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.preference.PreferenceManager;
@@ -41,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
     ManejadorMemoriaInterna manejadorMemoriaInterna;
     SharedPreferences preferencias;
     ResultadoViewModel resultadoViewModel;
+    private View ultimoBotonPulsado;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +58,7 @@ public class MainActivity extends AppCompatActivity {
         manejadorMemoriaInterna = new ManejadorMemoriaInterna();
         crearObservadores();
         resultadoViewModel = new ViewModelProvider(this).get(ResultadoViewModel.class);
+        reiniciarColorUltimoBotonPulsado();
     }
 
     private void cargarPreferencias() {
@@ -219,6 +224,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void reiniciar() {
         Log.i(LOG_TAG, "reiniciando partida...");
+        reiniciarColorUltimoBotonPulsado();
         cargarPreferencias();
         juegoBantumi.reiniciar(this.turnoInicial, this.numInicialSemillas, this.nombreJugador1);
     }
@@ -241,6 +247,7 @@ public class MainActivity extends AppCompatActivity {
             juegoBantumi.deserializa(partidaSerializada);
             setNumInicialSemillas(juegoBantumi.getNumInicialSemillas());
             setNombreJugador(juegoBantumi.getNombreJugador1());
+            reiniciarColorUltimoBotonPulsado();
             msgSnackbar = getString(R.string.txtSnackbarPartidaRecuperada);
         } else {
             msgSnackbar = getString(R.string.txtSnackbarPartidaNoEncontrada);
@@ -258,12 +265,17 @@ public class MainActivity extends AppCompatActivity {
      * @param v Vista pulsada (hueco)
      */
     public void huecoPulsado(@NonNull View v) {
+        reiniciarColorUltimoBotonPulsado();
         String resourceName = getResources().getResourceEntryName(v.getId()); // pXY
         int num = Integer.parseInt(resourceName.substring(resourceName.length() - 2));
         Log.i(LOG_TAG, "huecoPulsado(" + resourceName + ") num=" + num);
         switch (juegoBantumi.turnoActual()) {
             case turnoJ1:
-                juegoBantumi.jugar(num);
+                if(juegoBantumi.jugar(num)) {
+                    cambiarBotonPulsadoCorreco(v);
+                } else {
+                    cambiarBotonPulsadoIncorreco(v);
+                }
                 break;
             case turnoJ2:
                 juegaComputador();
@@ -283,13 +295,52 @@ public class MainActivity extends AppCompatActivity {
     void juegaComputador() {
         while (juegoBantumi.turnoActual() == JuegoBantumi.Turno.turnoJ2) {
             int pos = 7 + (int) (Math.random() * 6);    // posición aleatoria [7..12]
+
+            int[] ids = {
+                    R.id.casilla_07,
+                    R.id.casilla_08,
+                    R.id.casilla_09,
+                    R.id.casilla_10,
+                    R.id.casilla_11,
+                    R.id.casilla_12
+            };
+
+            View v = null;
+            if (pos >= 7 && pos <= 12) {
+                v = findViewById(ids[pos - 7]);
+            }
+
             Log.i(LOG_TAG, "juegaComputador(), pos=" + pos);
             if (juegoBantumi.getSemillas(pos) != 0 && (pos < 13)) {
-                juegoBantumi.jugar(pos);
+                if(juegoBantumi.jugar(pos)) {
+                    cambiarBotonPulsadoCorreco(v);
+                    if(juegoBantumi.turnoActual() == JuegoBantumi.Turno.turnoJ2) {
+                        reiniciarColorUltimoBotonPulsado();
+                    }
+                }
             } else {
                 Log.i(LOG_TAG, "\t posición vacía");
             }
         }
+    }
+
+    private void reiniciarColorUltimoBotonPulsado() {
+        if (ultimoBotonPulsado != null) {
+            ColorStateList colorStateList = ColorStateList.valueOf(ContextCompat.getColor(this.getApplicationContext(), R.color.orange));
+            ViewCompat.setBackgroundTintList(ultimoBotonPulsado, colorStateList);
+        }
+    }
+
+    private void cambiarBotonPulsadoCorreco(@NonNull View v) {
+        ColorStateList colorStateList = ColorStateList.valueOf(ContextCompat.getColor(this.getApplicationContext(), R.color.green));
+        ViewCompat.setBackgroundTintList(v, colorStateList);
+        this.ultimoBotonPulsado = v;
+    }
+
+    private void cambiarBotonPulsadoIncorreco(@NonNull View v) {
+        ColorStateList colorStateList = ColorStateList.valueOf(ContextCompat.getColor(this.getApplicationContext(), R.color.red));
+        ViewCompat.setBackgroundTintList(v, colorStateList);
+        this.ultimoBotonPulsado = v;
     }
 
     /**

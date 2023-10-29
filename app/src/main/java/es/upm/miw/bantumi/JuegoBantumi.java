@@ -86,15 +86,18 @@ public class JuegoBantumi {
      * Recoge las semillas en <i>pos</i> y realiza la siembra
      *
      * @param pos posición escogida [0..13]
+     * @return Indica si se ha jugado
      */
-    public void jugar(int pos) {
+    public boolean jugar(int pos) {
         if (pos < 0 || pos >= NUM_POSICIONES)
             throw new IndexOutOfBoundsException(String.format("Posición (%d) fuera de límites", pos));
+
         if (getSemillas(pos) == 0
                 || (pos < 6 && turnoActual() != Turno.turnoJ1)
                 || (pos > 6 && turnoActual() != Turno.turnoJ2)
         )
-            return;
+            return false;
+
         Log.i(MainActivity.LOG_TAG, String.format("jugar(%02d)", pos));
         this.juegoEmpezado = true;
 
@@ -144,6 +147,7 @@ public class JuegoBantumi {
         else if (turnoActual() == Turno.turnoJ2 && nextPos != 13)
             setTurno(Turno.turnoJ1);
         Log.i(MainActivity.LOG_TAG, "\t turno = " + turnoActual());
+        return true;
     }
 
     /**
